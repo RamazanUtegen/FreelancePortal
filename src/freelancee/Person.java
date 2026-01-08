@@ -1,4 +1,4 @@
-package freelance;
+package freelancee;
 
 public abstract class Person {
     private String name;
