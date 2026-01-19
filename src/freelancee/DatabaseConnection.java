@@ -1,24 +1,22 @@
 package freelancee;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class DatabaseConnection {
 
-    public Connection connect_to_db(String dbname, String user, String pass) {
-        Connection conn = null;
+    private static final String URL = "jdbc:postgresql://localhost:5432/";
+    private static final String DRIVER = "org.postgresql.Driver";
+
+    public Connection connect(String dbName, String user, String password) {
         try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + dbname, user, pass);
-            if (conn != null) {
-                System.out.println("Connection Established");
-            } else {
-                System.out.println("Connection Failed");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+            Class.forName(DRIVER);
+            return DriverManager.getConnection(URL + dbName, user, password);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Database connection error");
+            e.printStackTrace();
+            return null;
         }
-        return conn;
     }
 }
