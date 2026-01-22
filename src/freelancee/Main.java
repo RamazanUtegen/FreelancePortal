@@ -49,7 +49,7 @@ public class Main {
                     scanner.nextLine();
                     System.out.print("Enter new skill: ");
                     String newSkill = scanner.nextLine();
-                    freelancerDAO1.updateFreelancerSkill(conn, id, newSkill);
+                    freelancerDAO.updateFreelancerSkill(conn, id, newSkill);
                     break;
 
                 case 4:
