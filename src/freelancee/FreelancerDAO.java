@@ -1,28 +1,30 @@
 package freelancee;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class FreelancerDAO {
 
-
     public void addFreelancer(Connection conn, Freelancer freelancer) {
-        String sql = "INSERT INTO freelancers (name, skill) VALUES (?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            String sql = "INSERT INTO freelancers (name, skill) VALUES (?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, freelancer.getName());
             ps.setString(2, freelancer.getSkill());
             ps.executeUpdate();
-        } catch (SQLException e) {
+            System.out.println("Freelancer added successfully");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     public void getAllFreelancers(Connection conn) {
-        String sql = "SELECT * FROM freelancers";
-
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try {
+            String sql = "SELECT * FROM freelancers";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 System.out.println(
@@ -31,32 +33,32 @@ public class FreelancerDAO {
                                 rs.getString("skill")
                 );
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    public void updateSkill(Connection conn, int id, String newSkill) {
-        String sql = "UPDATE freelancers SET skill = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, newSkill);
+    public void updateFreelancerSkill(Connection conn, int id, String skill) {
+        try {
+            String sql = "UPDATE freelancers SET skill = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, skill);
             ps.setInt(2, id);
             ps.executeUpdate();
-        } catch (SQLException e) {
+            System.out.println("Freelancer skill updated");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     public void deleteFreelancer(Connection conn, int id) {
-        String sql = "DELETE FROM freelancers WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            String sql = "DELETE FROM freelancers WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
-        } catch (SQLException e) {
+            System.out.println("Freelancer deleted");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         DatabaseConnection db = new DatabaseConnection();
-        Connection conn = db.connect_to_db("postgres", "postgres", "87014667858");
+        Connection conn = db.connect("postgres", "postgres", "87014667858");
 
         if (conn == null) {
             System.out.println("Database connection failed");
