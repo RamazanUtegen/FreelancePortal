@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class FreelancerDAO {
 
-    // CREATE
+
     public void addFreelancer(Connection conn, Freelancer freelancer) {
         String sql = "INSERT INTO freelancers (name, skill) VALUES (?, ?)";
 
@@ -17,7 +17,7 @@ public class FreelancerDAO {
         }
     }
 
-    // READ
+
     public void getAllFreelancers(Connection conn) {
         String sql = "SELECT * FROM freelancers";
 
@@ -36,7 +36,7 @@ public class FreelancerDAO {
         }
     }
 
-    // UPDATE
+
     public void updateSkill(Connection conn, int id, String newSkill) {
         String sql = "UPDATE freelancers SET skill = ? WHERE id = ?";
 
@@ -49,7 +49,7 @@ public class FreelancerDAO {
         }
     }
 
-    // DELETE
+
     public void deleteFreelancer(Connection conn, int id) {
         String sql = "DELETE FROM freelancers WHERE id = ?";
 
