@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FreelancerDAO {
 
@@ -20,22 +22,22 @@ public class FreelancerDAO {
         }
     }
 
-    public void getAllFreelancers(Connection conn) {
+    public List<Freelancer> getAllFreelancers(Connection conn) {
+        List<Freelancer> freelancers = new ArrayList<>();
         try {
             String sql = "SELECT * FROM freelancers";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                System.out.println(
-                        rs.getInt("id") + " | " +
-                                rs.getString("name") + " | " +
-                                rs.getString("skill")
-                );
+                String name = rs.getString("name");
+                String skill = rs.getString("skill");
+                freelancers.add(new Freelancer(name, skill));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return freelancers;
     }
 
     public void updateFreelancerSkill(Connection conn, int id, String skill) {
