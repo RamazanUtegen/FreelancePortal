@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance Portal | Professional Edition</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: #2b2d42;
+        }
+
+        /* Заголовок с градиентом */
+        .header-section {
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Карточки */
+        .custom-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .card-header-custom {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Элементы списка */
+        .list-group-item {
+            border: none;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 10px !important;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .list-group-item:hover {
+            background: #e9ecef;
+            transform: scale(1.02);
+        }
+
+        /* Кнопки и инпуты */
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .btn-add {
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-section text-center">
+    <div class="container">
+        <h1><i class="fas fa-rocket"></i> Freelance Hub</h1>
+        <p class="opacity-75">Connect talent with opportunity</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+
+        <div class="col-md-6 animate-in" style="animation-delay: 0.1s;">
+            <div class="custom-card p-4">
+                <div class="card-header-custom text-primary">
+                    <i class="fas fa-users fa-lg"></i> Freelancers
+                </div>
+
+                <div class="mb-4">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-light border-0"><i class="fas fa-user"></i></span>
+                        <input type="text" id="fName" class="form-control" placeholder="Name (e.g. Dana)">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-light border-0"><i class="fas fa-code"></i></span>
+                        <input type="text" id="fSkill" class="form-control" placeholder="Skill (e.g. Python)">
+                    </div>
+                    <button onclick="addFreelancer()" class="btn btn-primary btn-add shadow-sm">
+                        <i class="fas fa-plus-circle"></i> Add Freelancer
+                    </button>
+                </div>
+
+                <hr class="text-muted opacity-25">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-muted m-0">Recent Freelancers</h6>
+                    <button onclick="loadFreelancers()" class="btn btn-sm btn-light text-primary"><i class="fas fa-sync-alt"></i></button>
+                </div>
+
+                <div id="freelancerLoader" class="text-center py-3 d-none">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+                <ul id="freelancerList" class="list-group">
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6 animate-in" style="animation-delay: 0.2s;">
+            <div class="custom-card p-4">
+                <div class="card-header-custom text-success">
+                    <i class="fas fa-briefcase fa-lg"></i> Job Listings
+                </div>
+
+                <div class="mb-4">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-light border-0"><i class="fas fa-heading"></i></span>
+                        <input type="text" id="jTitle" class="form-control" placeholder="Job Title (e.g. Design Logo)">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-light border-0"><i class="fas fa-dollar-sign"></i></span>
+                        <input type="number" id="jPrice" class="form-control" placeholder="Price">
+                    </div>
+                    <button onclick="addJob()" class="btn btn-success btn-add shadow-sm">
+                        <i class="fas fa-plus-circle"></i> Post Job
+                    </button>
+                </div>
+
+                <hr class="text-muted opacity-25">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-muted m-0">Active Jobs</h6>
+                    <button onclick="loadJobs()" class="btn btn-sm btn-light text-success"><i class="fas fa-sync-alt"></i></button>
+                </div>
+
+                <div id="jobLoader" class="text-center py-3 d-none">
+                    <div class="spinner-border text-success" role="status"></div>
+                </div>
+                <ul id="jobList" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-check-circle me-2"></i> <span id="toastMessage">Success!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-exclamation-circle me-2"></i> <span id="errorMessage">Error!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = "http://localhost:7000";
+
+    // Функция показа уведомлений
+    function showToast(message, isError = false) {
+        const toastEl = document.getElementById(isError ? 'errorToast' : 'liveToast');
+        const msgEl = document.getElementById(isError ? 'errorMessage' : 'toastMessage');
+        msgEl.textContent = message;
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+
+    // --- FREELANCERS ---
+    async function loadFreelancers() {
+        const loader = document.getElementById("freelancerLoader");
+        const list = document.getElementById("freelancerList");
+        loader.classList.remove("d-none"); // Show loader
+        list.innerHTML = ""; // Clear list
+
+        try {
+            const response = await fetch(API_URL + "/freelancers");
+            if (!response.ok) throw new Error("Server not running");
+            const data = await response.json();
+
+            if(data.length === 0) {
+                list.innerHTML = `<div class="text-center text-muted mt-3"><small>No freelancers found</small></div>`;
+            }
+
+            data.forEach(f => {
+                list.innerHTML += `
+                        <li class="list-group-item">
+                            <div><i class="fas fa-user-circle text-secondary me-2"></i> <strong>${f.name}</strong></div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill border border-primary border-opacity-25">
+                                ${f.skill}
+                            </span>
+                        </li>`;
+            });
+        } catch (error) {
+            showToast("Failed to load freelancers. Is Java server running?", true);
+        } finally {
+            loader.classList.add("d-none"); // Hide loader
+        }
+    }
+
+    async function addFreelancer() {
+        const nameIn = document.getElementById("fName");
+        const skillIn = document.getElementById("fSkill");
+
+        if(!nameIn.value || !skillIn.value) {
+            showToast("Please fill in all fields!", true);
+            return;
+        }
+
+        try {
+            await fetch(API_URL + "/freelancers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: nameIn.value, skill: skillIn.value })
+            });
+
+            showToast("Freelancer added successfully!");
+            nameIn.value = "";
+            skillIn.value = "";
+            loadFreelancers();
+        } catch (e) {
+            showToast("Error adding freelancer", true);
+        }
+    }
+
+    // --- JOBS ---
+    async function loadJobs() {
+        const loader = document.getElementById("jobLoader");
+        const list = document.getElementById("jobList");
+        loader.classList.remove("d-none");
+        list.innerHTML = "";
+
+        try {
+            const response = await fetch(API_URL + "/jobs");
+            if (!response.ok) throw new Error("Server error");
+            const data = await response.json();
+
+            if(data.length === 0) {
+                list.innerHTML = `<div class="text-center text-muted mt-3"><small>No jobs posted yet</small></div>`;
+            }
+
+            data.forEach(j => {
+                list.innerHTML += `
+                        <li class="list-group-item">
+                            <div><i class="fas fa-laptop-code text-secondary me-2"></i> ${j.title}</div>
+                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill border border-success border-opacity-25">
+                                $${j.price}
+                            </span>
+                        </li>`;
+            });
+        } catch (error) {
+            showToast("Failed to load jobs", true);
+        } finally {
+            loader.classList.add("d-none");
+        }
+    }
+
+    async function addJob() {
+        const titleIn = document.getElementById("jTitle");
+        const priceIn = document.getElementById("jPrice");
+
+        if(!titleIn.value || !priceIn.value) {
+            showToast("Please fill in all fields!", true);
+            return;
+        }
+
+        try {
+            await fetch(API_URL + "/jobs", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: titleIn.value, price: parseFloat(priceIn.value) })
+            });
+
+            showToast("Job posted successfully!");
+            titleIn.value = "";
+            priceIn.value = "";
+            loadJobs();
+        } catch (e) {
+            showToast("Error posting job", true);
+        }
+    }
+
+    // Запуск при старте
+    loadFreelancers();
+    loadJobs();
+</script>
+</body>
+</html>
